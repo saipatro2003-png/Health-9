@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZenFlow — Your Complete Wellness Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sage: #7C9A7E;
+  --clay: #C4956A;
+  --cream: #FAF6EF;
+  --deep: #1C2B1E;
+  --soft: #E8E0D4;
+  --accent: #D4784A;
+  --mist: #B8C9B9;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--deep);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── CURSOR ── */
+.cursor { width: 10px; height: 10px; background: var(--sage); border-radius: 50%; position: fixed; top:0;left:0; pointer-events:none; z-index:9999; transition: transform 0.15s; mix-blend-mode: multiply; }
+.cursor-ring { width: 34px; height: 34px; border: 1.5px solid var(--clay); border-radius: 50%; position: fixed; top:0;left:0; pointer-events:none; z-index:9998; transition: all 0.3s; mix-blend-mode: multiply; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index: 200;
+  padding: 20px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(250,246,239,0.88); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(124,154,126,0.12);
+  transition: padding 0.3s;
+}
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: var(--deep); text-decoration: none; }
+.nav-logo span { color: var(--sage); font-style: italic; }
+.nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+.nav-links a { text-decoration: none; color: var(--deep); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.6; transition: opacity 0.3s; }
+.nav-links a:hover { opacity: 1; }
+.nav-cta { background: var(--deep) !important; color: var(--cream) !important; padding: 10px 22px; border-radius: 50px; opacity: 1 !important; font-weight: 500 !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 14px !important; transition: background 0.3s !important; }
+.nav-cta:hover { background: var(--sage) !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-bg-orb {
+  position: absolute; border-radius: 50%;
+  animation: breathe 7s ease-in-out infinite;
+}
+.hero-bg-orb:nth-child(1) { width: 700px; height: 700px; background: radial-gradient(circle, rgba(124,154,126,0.12), transparent 70%); top: -150px; right: -150px; }
+.hero-bg-orb:nth-child(2) { width: 500px; height: 500px; background: radial-gradient(circle, rgba(196,149,106,0.1), transparent 70%); bottom: -100px; left: -100px; animation-delay: 3s; animation-direction: reverse; }
+.hero-bg-orb:nth-child(3) { width: 300px; height: 300px; background: radial-gradient(circle, rgba(124,154,126,0.08), transparent 70%); top: 40%; left: 10%; animation-delay: 1.5s; }
+@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(124,154,126,0.1); border: 1px solid rgba(124,154,126,0.25);
+  padding: 6px 18px; border-radius: 50px;
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--sage);
+  margin-bottom: 36px;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge::before { content: '✦'; font-size: 10px; }
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(56px, 8vw, 100px);
+  font-weight: 300; line-height: 1.0; color: var(--deep);
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s 0.15s ease both;
+}
+.hero h1 em { font-style: italic; color: var(--sage); }
+.hero h1 strong { font-weight: 600; }
+
+.hero-sub {
+  font-size: 18px; line-height: 1.75; color: rgba(28,43,30,0.6);
+  max-width: 600px; font-weight: 300; margin-bottom: 50px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.hero-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.45s ease both;
+  margin-bottom: 80px;
+}
+.btn-primary {
+  background: var(--deep); color: var(--cream);
+  padding: 16px 40px; border-radius: 50px; text-decoration: none;
+  font-size: 15px; font-weight: 500; transition: all 0.3s;
+}
+.btn-primary:hover { background: var(--sage); transform: translateY(-2px); }
+.btn-outline {
+  border: 1.5px solid rgba(28,43,30,0.2); color: var(--deep);
+  padding: 16px 40px; border-radius: 50px; text-decoration: none;
+  font-size: 15px; font-weight: 400; transition: all 0.3s;
+}
+.btn-outline:hover { border-color: var(--sage); color: var(--sage); }
+
+/* hero stats row */
+.hero-stats {
+  display: flex; gap: 60px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.6s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 44px; font-weight: 300; color: var(--sage); line-height: 1;
+}
+.hero-stat .lbl { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(28,43,30,0.45); margin-top: 4px; }
+
+/* scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: fadeUp 1s 1s ease both;
+}
+.scroll-hint span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(28,43,30,0.35); }
+.scroll-arrow { width: 1px; height: 48px; background: linear-gradient(to bottom, rgba(124,154,126,0.6), transparent); animation: scrollLine 2s ease-in-out infinite; }
+@keyframes scrollLine { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.15)} }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── SECTION COMMONS ── */
+.section-wrap { padding: 110px 60px; }
+.section-label {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--clay);
+  margin-bottom: 18px;
+}
+.section-label::before { content:''; width:28px; height:1px; background:var(--clay); }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 60px); font-weight: 300; line-height: 1.1; color: var(--deep);
+  margin-bottom: 16px;
+}
+.section-title em { font-style: italic; color: var(--sage); }
+.section-sub { font-size: 16px; color: rgba(28,43,30,0.55); font-weight: 300; line-height: 1.75; max-width: 520px; }
+
+/* ── FEATURES OVERVIEW ── */
+.features-section { background: var(--cream); }
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px;
+}
+.feat-card {
+  background: white; border: 1px solid rgba(124,154,126,0.1);
+  border-radius: 24px; padding: 36px 32px;
+  transition: all 0.4s; position: relative; overflow: hidden;
+  cursor: default;
+}
+.feat-card::before {
+  content:''; position:absolute; top:0;left:0;right:0; height:3px;
+  background: linear-gradient(90deg, var(--sage), var(--mist));
+  transform: scaleX(0); transition: transform 0.4s; transform-origin: left;
+}
+.feat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(28,43,30,0.1); border-color: rgba(124,154,126,0.25); }
+.feat-card:hover::before { transform: scaleX(1); }
+.feat-icon { font-size: 40px; margin-bottom: 20px; display: block; }
+.feat-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--deep); margin-bottom: 10px; }
+.feat-card p { font-size: 14px; color: rgba(28,43,30,0.55); line-height: 1.7; font-weight: 300; margin-bottom: 18px; }
+.feat-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.feat-tag { background: rgba(124,154,126,0.08); border-radius: 50px; padding: 4px 11px; font-size: 11px; color: var(--sage); }
+
+/* ── DASHBOARD SHOWCASE ── */
+.dash-showcase { background: var(--deep); padding: 110px 60px; position: relative; overflow: hidden; }
+.dash-showcase::before {
+  content:''; position:absolute; top:-200px; right:-200px;
+  width:600px; height:600px;
+  background: radial-gradient(circle, rgba(124,154,126,0.15), transparent 70%);
+  border-radius:50%;
+}
+.dash-showcase .section-label { color: var(--mist); }
+.dash-showcase .section-label::before { background: var(--mist); }
+.dash-showcase .section-title { color: var(--cream); }
+.dash-showcase .section-sub { color: rgba(250,246,239,0.5); }
+
+.dash-preview-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 60px;
+}
+.dash-card {
+  background: rgba(250,246,239,0.04); border: 1px solid rgba(250,246,239,0.08);
+  border-radius: 20px; padding: 28px; transition: all 0.35s;
+}
+.dash-card:hover { background: rgba(250,246,239,0.07); border-color: rgba(124,154,126,0.3); transform: translateY(-4px); }
+.dash-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.dash-card-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.dash-card-icon.green { background: rgba(124,154,126,0.2); }
+.dash-card-icon.clay  { background: rgba(196,149,106,0.2); }
+.dash-card-icon.blue  { background: rgba(59,130,246,0.15); }
+.dash-card-icon.purple{ background: rgba(168,85,247,0.15); }
+.dash-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--cream); }
+.dash-card p  { font-size: 13px; color: rgba(250,246,239,0.45); }
+
+/* mock task list */
+.mock-tasks { display: flex; flex-direction: column; gap: 9px; }
+.mock-task {
+  display: flex; align-items: center; gap: 11px;
+  background: rgba(250,246,239,0.04); border-radius: 10px; padding: 11px 14px;
+}
+.mock-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid rgba(124,154,126,0.4); flex-shrink:0; }
+.mock-check.done { background: var(--sage); border-color: var(--sage); display:flex;align-items:center;justify-content:center;font-size:10px;color:white; }
+.mock-task-name { font-size: 13px; color: rgba(250,246,239,0.7); }
+.mock-task-name.done { text-decoration: line-through; color: rgba(250,246,239,0.3); }
+
+/* mock progress */
+.mock-progress { margin-top: 14px; }
+.mock-prog-label { display: flex; justify-content: space-between; font-size: 11px; color: rgba(250,246,239,0.35); margin-bottom: 7px; }
+.mock-prog-track { height: 6px; background: rgba(250,246,239,0.07); border-radius: 6px; overflow: hidden; }
+.mock-prog-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--sage), var(--clay)); transition: width 1.4s ease; }
+
+/* mock stat row */
+.mock-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.mock-stat { background: rgba(250,246,239,0.04); border: 1px solid rgba(250,246,239,0.07); border-radius: 12px; padding: 14px; text-align:center; }
+.mock-stat-val { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; color: var(--sage); line-height:1; }
+.mock-stat-lbl { font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(250,246,239,0.3); margin-top: 3px; }
+
+/* mock chat */
+.mock-chat { display: flex; flex-direction: column; gap: 9px; }
+.mock-msg { padding: 11px 14px; border-radius: 12px; font-size: 13px; line-height: 1.55; max-width: 90%; }
+.mock-msg.ai { background: rgba(124,154,126,0.15); border: 1px solid rgba(124,154,126,0.2); color: rgba(250,246,239,0.8); align-self: flex-start; }
+.mock-msg.ai::before { content:'✦ Coach'; display:block; font-size:9px; letter-spacing:2px; color:var(--sage); margin-bottom:5px; text-transform:uppercase; }
+.mock-msg.user { background: rgba(196,149,106,0.18); border: 1px solid rgba(196,149,106,0.25); color: rgba(250,246,239,0.8); align-self: flex-end; }
+
+/* ── AI FEATURES ── */
+.ai-section { background: white; padding: 110px 60px; }
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 60px; }
+.ai-feature-list { display: flex; flex-direction: column; gap: 20px; }
+.ai-feature {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: 22px 24px; border-radius: 18px; border: 1px solid rgba(124,154,126,0.1);
+  transition: all 0.3s; cursor: default;
+}
+.ai-feature:hover { border-color: var(--sage); background: rgba(124,154,126,0.04); transform: translateX(4px); }
+.ai-feature-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+.ai-feature h4 { font-size: 15px; font-weight: 600; color: var(--deep); margin-bottom: 5px; }
+.ai-feature p { font-size: 13px; color: rgba(28,43,30,0.55); line-height: 1.65; font-weight: 300; }
+
+/* AI mock response preview */
+.ai-preview {
+  background: linear-gradient(135deg, #1C2B1E, #2D4A30);
+  border-radius: 24px; padding: 28px; overflow: hidden;
+}
+.ai-preview-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  padding-bottom: 14px; border-bottom: 1px solid rgba(250,246,239,0.08);
+}
+.ai-preview-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 8px rgba(124,154,126,0.5); }
+.ai-preview-title { color: var(--cream); font-family: 'Cormorant Garamond', serif; font-size: 16px; }
+.ai-resp-card { border-radius: 12px; padding: 13px 15px; margin-bottom: 9px; border-left: 3px solid; }
+.ai-resp-card.u { background: rgba(59,130,246,0.1); border-color: #60a5fa; }
+.ai-resp-card.a { background: rgba(168,85,247,0.1); border-color: #c084fc; }
+.ai-resp-card.s { background: rgba(124,154,126,0.15); border-color: var(--sage); }
+.ai-resp-card.f { background: rgba(196,149,106,0.1); border-color: var(--clay); }
+.ai-resp-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; font-family: 'DM Sans', sans-serif; margin-bottom: 6px; }
+.ai-resp-card.u .ai-resp-lbl { color: #60a5fa; }
+.ai-resp-card.a .ai-resp-lbl { color: #c084fc; }
+.ai-resp-card.s .ai-resp-lbl { color: var(--sage); }
+.ai-resp-card.f .ai-resp-lbl { color: var(--clay); }
+.ai-resp-text { font-size: 12.5px; color: rgba(250,246,239,0.75); line-height: 1.65; }
+.ai-step-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 5px; }
+.ai-step-num { width: 18px; height: 18px; border-radius: 50%; background: var(--sage); color: white; font-size: 9px; font-weight: 700; display:flex;align-items:center;justify-content:center; flex-shrink:0; margin-top:2px; }
+
+/* ── YOGA PREVIEW ── */
+.yoga-preview-section { background: var(--cream); padding: 110px 60px; }
+.yoga-mini-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 60px; }
+.yoga-mini-card {
+  background: white; border: 1px solid rgba(124,154,126,0.1);
+  border-radius: 20px; overflow: hidden; transition: all 0.35s; cursor: default;
+}
+.yoga-mini-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(28,43,30,0.1); border-color: var(--sage); }
+.yoga-mini-img { height: 110px; display:flex;align-items:center;justify-content:center; font-size: 56px; }
+.yoga-mini-body { padding: 16px; }
+.yoga-mini-level { font-size: 9.5px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 7px; display: inline-block; padding: 3px 9px; border-radius: 50px; }
+.lvl-beg { background: rgba(124,154,126,0.1); color: var(--sage); }
+.lvl-int { background: rgba(196,149,106,0.1); color: var(--clay); }
+.lvl-adv { background: rgba(212,120,74,0.12); color: var(--accent); }
+.yoga-mini-body h4 { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--deep); margin-bottom: 5px; }
+.yoga-mini-body p { font-size: 11.5px; color: rgba(28,43,30,0.5); line-height: 1.6; }
+
+/* ── STREAK & HABIT ── */
+.streak-preview { background: var(--deep); padding: 110px 60px; position:relative;overflow:hidden; }
+.streak-preview::before { content:''; position:absolute;bottom:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(124,154,126,0.12),transparent 70%);border-radius:50%; }
+.streak-preview .section-label { color: var(--mist); }
+.streak-preview .section-label::before { background: var(--mist); }
+.streak-preview .section-title { color: var(--cream); }
+.streak-preview .section-sub { color: rgba(250,246,239,0.5); }
+.streak-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; align-items: start; }
+.streak-big-num { font-family: 'Cormorant Garamond', serif; font-size: 110px; font-weight: 300; color: var(--clay); line-height: 1; text-align: center; }
+.streak-fire { font-size: 64px; text-align: center; animation: float 3s ease-in-out infinite; margin-bottom: 4px; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.streak-label-txt { text-align: center; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(250,246,239,0.35); }
+
+.mock-habits { display: flex; flex-direction: column; gap: 12px; }
+.mock-habit {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(250,246,239,0.04); border: 1px solid rgba(250,246,239,0.08);
+  border-radius: 14px; padding: 15px 18px; transition: all 0.3s;
+}
+.mock-habit:hover { background: rgba(250,246,239,0.07); border-color: rgba(124,154,126,0.25); }
+.mock-habit-check { width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid rgba(250,246,239,0.2); flex-shrink:0; display:flex;align-items:center;justify-content:center;font-size:13px; }
+.mock-habit-check.done { background: var(--sage); border-color: var(--sage); }
+.mock-habit-info h5 { font-size: 14px; font-weight: 500; color: var(--cream); }
+.mock-habit-info p { font-size: 11.5px; color: rgba(250,246,239,0.35); margin-top: 2px; }
+.mock-habit-xp { margin-left: auto; font-size: 11px; color: var(--clay); font-weight: 500; }
+
+/* ── NUTRITION ── */
+.nutrition-preview { background: var(--cream); padding: 110px 60px; }
+.nutrition-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 60px; }
+.nutri-card {
+  background: white; border-radius: 20px; padding: 28px;
+  border: 1px solid rgba(124,154,126,0.1); position:relative;overflow:hidden;
+  transition: all 0.35s;
+}
+.nutri-card::before { content:''; position:absolute;top:0;left:0;right:0;height:3px;background:var(--sage); }
+.nutri-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(28,43,30,0.08); }
+.nutri-emoji { font-size: 36px; margin-bottom: 14px; }
+.nutri-card h4 { font-size: 15px; font-weight: 600; color: var(--deep); margin-bottom: 8px; }
+.nutri-card p { font-size: 13px; color: rgba(28,43,30,0.55); line-height: 1.7; font-weight: 300; }
+.nutri-badge { display:inline-flex;margin-top:14px;background:rgba(124,154,126,0.08);color:var(--sage);font-size:10.5px;letter-spacing:1px;padding:4px 12px;border-radius:50px;text-transform:uppercase; }
+
+/* ── BREATHWORK ── */
+.breathe-feature { background: linear-gradient(135deg, #1C2B1E, #2D4A30); padding: 110px 60px; text-align:center; position:relative;overflow:hidden; }
+.breathe-feature .section-label { color: var(--mist); justify-content:center; }
+.breathe-feature .section-label::before { background: var(--mist); }
+.breathe-feature .section-title { color: var(--cream); }
+.breathe-circle-demo {
+  width: 180px; height: 180px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,154,126,0.4), rgba(124,154,126,0.1));
+  border: 2px solid rgba(124,154,126,0.35);
+  display:flex;align-items:center;justify-content:center;
+  margin: 50px auto 30px;
+  font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--cream);
+  position: relative; cursor: pointer;
+  animation: breatheCircle 5s ease-in-out infinite;
+}
+.breathe-circle-demo::before { content:'';position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(124,154,126,0.15);animation:pulseRing 5s ease-in-out infinite; }
+.breathe-circle-demo::after  { content:'';position:absolute;inset:-36px;border-radius:50%;border:1px solid rgba(124,154,126,0.07);animation:pulseRing 5s 0.5s ease-in-out infinite; }
+@keyframes breatheCircle { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+@keyframes pulseRing { 0%,100%{transform:scale(1);opacity:0.8} 50%{transform:scale(1.1);opacity:0.3} }
+.breathe-desc { font-size: 15px; color: rgba(250,246,239,0.5); max-width: 440px; margin: 0 auto; line-height: 1.75; font-weight:300; }
+
+/* ── CTA STRIP ── */
+.cta-strip { background: var(--sage); padding: 80px 60px; text-align:center; }
+.cta-strip h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px,5vw,58px); font-weight:300; color: white; line-height:1.1; margin-bottom:20px; }
+.cta-strip h2 em { font-style:italic; color: rgba(255,255,255,0.75); }
+.cta-strip p { font-size:16px; color:rgba(255,255,255,0.7); font-weight:300; margin-bottom:40px; }
+.cta-btns { display:flex;gap:14px;justify-content:center;flex-wrap:wrap; }
+.cta-btn-w { background:white;color:var(--deep);padding:15px 38px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:600;transition:all 0.3s; }
+.cta-btn-w:hover { background:var(--deep);color:white;transform:translateY(-2px); }
+.cta-btn-t { border:1.5px solid rgba(255,255,255,0.5);color:white;padding:15px 38px;border-radius:50px;text-decoration:none;font-size:14px;font-weight:400;transition:all 0.3s; }
+.cta-btn-t:hover { border-color:white;background:rgba(255,255,255,0.1); }
+
+/* ── FOOTER ── */
+footer { background:var(--deep);color:var(--cream);padding:60px;text-align:center; }
+footer .logo { font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600; }
+footer .logo span { color:var(--sage);font-style:italic; }
+footer p { margin-top:14px;font-size:13px;color:rgba(250,246,239,0.3);font-weight:300; }
+footer .foot-links { display:flex;gap:32px;justify-content:center;margin-top:24px;flex-wrap:wrap; }
+footer .foot-links a { font-size:12px;color:rgba(250,246,239,0.35);text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:color 0.3s; }
+footer .foot-links a:hover { color:var(--sage); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 18px 24px; }
+  .nav-links { display: none; }
+  .section-wrap, .dash-showcase, .ai-section, .yoga-preview-section, .streak-preview, .nutrition-preview, .breathe-feature, .cta-strip { padding: 70px 24px; }
+  .features-grid, .ai-grid, .dash-preview-grid, .yoga-mini-grid, .nutrition-cards, .streak-inner { grid-template-columns: 1fr; }
+  .yoga-mini-grid { grid-template-columns: 1fr 1fr; }
+  footer { padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Zen<span>Flow</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#ai">AI Coach</a></li>
+    <li><a href="#yoga">Yoga</a></li>
+    <li><a href="#streak">Habits</a></li>
+    <li><a href="#cta" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-orb"></div>
+  <div class="hero-bg-orb"></div>
+  <div class="hero-bg-orb"></div>
+
+  <div class="hero-badge">Your complete wellness platform</div>
+
+  <h1>Live <em>balanced.</em><br><strong>Breathe</strong> deeply.</h1>
+
+  <p class="hero-sub">Yoga poses, AI life coaching, nutrition plans, daily habit streaks, guided breathwork — everything you need to thrive, beautifully in one place.</p>
+
+  <div class="hero-btns">
+    <a href="#features" class="btn-primary">Explore Features</a>
+    <a href="#dashboard" class="btn-outline">See Dashboard →</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">12+</div><div class="lbl">Yoga Poses</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="lbl">Meal Plans</div></div>
+    <div class="hero-stat"><div class="num">∞</div><div class="lbl">AI Coaching</div></div>
+    <div class="hero-stat"><div class="num">6</div><div class="lbl">Daily Habits</div></div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- FEATURES OVERVIEW -->
+<section class="section-wrap features-section" id="features">
+  <div class="section-label">Everything you need</div>
+  <h2 class="section-title">One platform for your<br><em>complete</em> wellbeing</h2>
+  <p class="section-sub">Six deeply integrated pillars — each powerful on its own, transformative together.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <span class="feat-icon">🧘</span>
+      <h3>Yoga Library</h3>
+      <p>12+ guided poses from beginner to advanced — mountain, warrior, lotus and more. Filter by level, time of day, or goal. Tap any card to unlock full step-by-step instructions and benefits.</p>
+      <div class="feat-tags">
+        <span class="feat-tag">12+ Poses</span>
+        <span class="feat-tag">All Levels</span>
+        <span class="feat-tag">Guided Steps</span>
+      </div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🧠</span>
+      <h3>Life & Health AI Coach</h3>
+      <p>Your personal AI advisor for productivity, mental health, habits, career decisions and more. Every response is structured — understanding, advice, 3 action steps, and a follow-up question.</p>
+      <div class="feat-tags">
+        <span class="feat-tag">Structured Advice</span>
+        <span class="feat-tag">Action Steps</span>
+        <span class="feat-tag">Non-medical</span>
+      </div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🔥</span>
+      <h3>Habit Streak Tracker</h3>
+      <p>Track 6 daily wellness habits with AI verification, timers, and photo proof. Build streaks, earn XP, and watch your monthly calendar fill with green. Dashboard shows real-time progress.</p>
+      <div class="feat-tags">
+        <span class="feat-tag">AI Verified</span>
+        <span class="feat-tag">XP System</span>
+        <span class="feat-tag">Streak Calendar</span>
+      </div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🥗</span>
+      <h3>Nutrition Plans</h3>
+      <p>Four curated meal plans — Balanced, Vegetarian, High Protein, and Detox — with macro trackers, calorie counts per meal, and nutrition facts from Ayurvedic to modern science.</p>
+      <div class="feat-tags">
+        <span class="feat-tag">4 Meal Plans</span>
+        <span class="feat-tag">Macro Tracker</span>
+        <span class="feat-tag">Nutrition Facts</span>
+      </div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">🌬️</span>
+      <h3>Guided Breathwork</h3>
+      <p>Interactive breathing sessions with animated circles, real-time inhale/exhale guidance, and progress tracking. Proven techniques for stress relief, focus, and sleep.</p>
+      <div class="feat-tags">
+        <span class="feat-tag">Animated Guide</span>
+        <span class="feat-tag">Timed Sessions</span>
+        <span class="feat-tag">Stress Relief</span>
+      </div>
+    </div>
+    <div class="feat-card">
+      <span class="feat-icon">📋</span>
+      <h3>Personal Dashboard</h3>
+      <p>Your private command center — login with your account, track daily tasks, view chat history, monitor streak and progress, and access the embedded Life & Health AI Coach, all in one screen.</p>
+      <div class="feat-tags">
+        <span class="feat-tag">Personal Account</span>
+        <span class="feat-tag">Task Manager</span>
+        <span class="feat-tag">AI Coach</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD SHOWCASE -->
+<section class="dash-showcase" id="dashboard">
+  <div class="section-label">Your personal space</div>
+  <h2 class="section-title">The <em>Dashboard</em> —<br>your wellness command center</h2>
+  <p class="section-sub">Login once and your entire wellness life is tracked, saved, and personalized. Your data, your journey.</p>
+
+  <div class="dash-preview-grid">
+
+    <!-- Task Manager -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="dash-card-icon green">📋</div>
+        <div><h4>My Daily Tasks</h4><p>Track & check off your wellness goals</p></div>
+      </div>
+      <div class="mock-tasks">
+        <div class="mock-task">
+          <div class="mock-check done">✓</div>
+          <span class="mock-task-name done">Morning yoga 10 min</span>
+        </div>
+        <div class="mock-task">
+          <div class="mock-check done">✓</div>
+          <span class="mock-task-name done">Drink 8 glasses of water</span>
+        </div>
+        <div class="mock-task">
+          <div class="mock-check"></div>
+          <span class="mock-task-name">Evening meditation</span>
+        </div>
+        <div class="mock-task">
+          <div class="mock-check"></div>
+          <span class="mock-task-name">Sleep by 10:30 PM</span>
+        </div>
+      </div>
+      <div class="mock-progress">
+        <div class="mock-prog-label"><span>Today's Progress</span><span>50%</span></div>
+        <div class="mock-prog-track"><div class="mock-prog-fill" id="progFill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="dash-card-icon clay">📊</div>
+        <div><h4>Wellness Stats</h4><p>Streak, tasks, and daily progress</p></div>
+      </div>
+      <div class="mock-stats">
+        <div class="mock-stat"><div class="mock-stat-val">7🔥</div><div class="mock-stat-lbl">Day Streak</div></div>
+        <div class="mock-stat"><div class="mock-stat-val">4</div><div class="mock-stat-lbl">Total Tasks</div></div>
+        <div class="mock-stat"><div class="mock-stat-val">2</div><div class="mock-stat-lbl">Done Today</div></div>
+      </div>
+      <div style="margin-top:20px;padding:16px;background:rgba(250,246,239,0.04);border-radius:12px;border:1px solid rgba(250,246,239,0.07);">
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,246,239,0.3);margin-bottom:10px;">Add a new task</div>
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;background:rgba(250,246,239,0.06);border:1px solid rgba(250,246,239,0.1);border-radius:8px;padding:9px 12px;font-size:12px;color:rgba(250,246,239,0.3);">e.g. Read 20 pages…</div>
+          <div style="background:var(--sage);border-radius:8px;padding:9px 14px;font-size:12px;color:white;font-weight:500;">+ Add</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat history -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="dash-card-icon blue">💬</div>
+        <div><h4>Chat History</h4><p>Your recent AI coaching sessions</p></div>
+      </div>
+      <div class="mock-chat">
+        <div class="mock-msg user">I've been feeling so stressed lately…</div>
+        <div class="mock-msg ai">Stress often builds when we lack boundaries or rest. Let's work on this together.</div>
+        <div class="mock-msg user">What should I do first?</div>
+        <div class="mock-msg ai">Start with 5 minutes of box breathing right now. Then we'll map out 3 action steps.</div>
+      </div>
+    </div>
+
+    <!-- AI Coach preview -->
+    <div class="dash-card">
+      <div class="dash-card-header">
+        <div class="dash-card-icon purple">✦</div>
+        <div><h4>Life & Health Coach</h4><p>Structured AI coaching in the dashboard</p></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);border-left:3px solid #60a5fa;border-radius:10px;padding:11px 13px;">
+          <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#60a5fa;margin-bottom:4px;font-weight:700;">🧠 Understanding</div>
+          <div style="font-size:12px;color:rgba(250,246,239,0.7);line-height:1.6;">You're struggling with focus due to fragmented work sessions and digital distractions.</div>
+        </div>
+        <div style="background:rgba(124,154,126,0.12);border:1px solid rgba(124,154,126,0.3);border-left:3px solid #7C9A7E;border-radius:10px;padding:11px 13px;">
+          <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#7C9A7E;margin-bottom:4px;font-weight:700;">✅ Action Steps</div>
+          <div style="font-size:12px;color:rgba(250,246,239,0.7);line-height:1.65;">1. Use 25-min Pomodoro blocks<br>2. Phone in another room while working<br>3. Single task list of max 3 items/day</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AI FEATURES -->
+<section class="ai-section" id="ai">
+  <div class="section-label">Powered by Claude AI</div>
+  <h2 class="section-title">Two AI modes for<br><em>every</em> wellness need</h2>
+  <p class="section-sub">From structured life coaching to instant yoga guidance — intelligent support available across the entire platform.</p>
+
+  <div class="ai-grid">
+    <div class="ai-feature-list">
+      <div class="ai-feature">
+        <span class="ai-feature-icon">🧠</span>
+        <div>
+          <h4>Life & Health Coach</h4>
+          <p>Every response is structured into 4 sections: situation understanding, clear advice, 3 concrete action steps, and a follow-up question to keep your momentum going.</p>
+        </div>
+      </div>
+      <div class="ai-feature">
+        <span class="ai-feature-icon">🌿</span>
+        <div>
+          <h4>ZenAI — Yoga & Wellness Guide</h4>
+          <p>Your calm, wise yoga teacher available 24/7. Ask about poses, breathwork, meal timing, meditation techniques, or anything wellness-related in natural conversation.</p>
+        </div>
+      </div>
+      <div class="ai-feature">
+        <span class="ai-feature-icon">🤖</span>
+        <div>
+          <h4>AI Habit Verification</h4>
+          <p>When you complete a habit, the AI asks 2 natural follow-up questions to genuinely verify completion. No gaming the system — real accountability with warmth.</p>
+        </div>
+      </div>
+      <div class="ai-feature">
+        <span class="ai-feature-icon">💬</span>
+        <div>
+          <h4>Persistent Chat History</h4>
+          <p>Every coaching conversation is saved to your personal account. Revisit past advice, track your growth, and pick up right where you left off in the dashboard.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI response preview -->
+    <div class="ai-preview">
+      <div class="ai-preview-header">
+        <div class="ai-preview-dot"></div>
+        <div class="ai-preview-title">Life & Health Coach — Live Preview</div>
+      </div>
+      <div style="background:rgba(196,149,106,0.15);border:1px solid rgba(196,149,106,0.2);border-radius:10px 10px 4px 10px;padding:10px 13px;margin-bottom:12px;font-size:12.5px;color:rgba(250,246,239,0.75);text-align:right;">
+        I feel tired no matter how much I sleep 😔
+      </div>
+      <div class="ai-resp-card u">
+        <div class="ai-resp-lbl">🧠 Understanding</div>
+        <div class="ai-resp-text">Excessive tiredness despite adequate sleep often points to poor sleep quality, not duration — light cycles, stress hormones, or blood sugar may be disrupting your deep sleep stages.</div>
+      </div>
+      <div class="ai-resp-card a">
+        <div class="ai-resp-lbl">💡 Clear Advice</div>
+        <div class="ai-resp-text">Focus on sleep quality over quantity. Cool your room to 18°C, eliminate blue light an hour before bed, and stabilize blood sugar with a protein-rich dinner.</div>
+      </div>
+      <div class="ai-resp-card s">
+        <div class="ai-resp-lbl">✅ Action Steps</div>
+        <div class="ai-resp-text">
+          <div class="ai-step-row"><div class="ai-step-num">1</div><div>Set a consistent sleep and wake time — even weekends</div></div>
+          <div class="ai-step-row"><div class="ai-step-num">2</div><div>No screens 60 minutes before bed tonight</div></div>
+          <div class="ai-step-row"><div class="ai-step-num">3</div><div>Try 4-7-8 breathing to fall asleep faster</div></div>
+        </div>
+      </div>
+      <div class="ai-resp-card f">
+        <div class="ai-resp-lbl">🔁 Follow-up</div>
+        <div class="ai-resp-text">Do you wake up during the night, or just feel unrefreshed in the morning?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YOGA PREVIEW -->
+<section class="yoga-preview-section" id="yoga">
+  <div class="section-label">Move your body</div>
+  <h2 class="section-title">12+ guided <em>yoga poses</em><br>for every level</h2>
+  <p class="section-sub">From calming beginner poses to energizing flows — filter by level, morning or evening, and tap any card for full step-by-step instructions.</p>
+
+  <div class="yoga-mini-grid">
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(124,154,126,0.1),rgba(28,43,30,0.05))">🧍</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-beg">Beginner</span>
+        <h4>Mountain Pose</h4>
+        <p>Foundation of all standing poses. Builds posture & grounding.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(196,149,106,0.1),rgba(212,120,74,0.05))">🥷</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-int">Intermediate</span>
+        <h4>Warrior II</h4>
+        <p>Builds strength, opens hips, and boosts stamina.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(124,154,126,0.1),rgba(184,201,185,0.1))">🌳</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-beg">Beginner</span>
+        <h4>Tree Pose</h4>
+        <p>Improves balance, focus and mind-body connection.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(124,154,126,0.12),rgba(184,201,185,0.15))">🪷</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-adv">Advanced</span>
+        <h4>Lotus Pose</h4>
+        <p>Classic meditation posture. Opens hips deeply.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(196,149,106,0.08),rgba(124,154,126,0.08))">🐕</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-int">Intermediate</span>
+        <h4>Downward Dog</h4>
+        <p>Full-body stretch. Perfect for morning practice.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(232,224,212,0.8),rgba(250,246,239,0.5))">🙇</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-beg">Beginner</span>
+        <h4>Child's Pose</h4>
+        <p>Deeply restful. Relieves stress and back pain.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(212,120,74,0.1),rgba(196,149,106,0.08))">🐍</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-int">Intermediate</span>
+        <h4>Cobra Pose</h4>
+        <p>Opens chest, strengthens spine and core.</p>
+      </div>
+    </div>
+    <div class="yoga-mini-card">
+      <div class="yoga-mini-img" style="background:linear-gradient(135deg,rgba(196,149,106,0.08),rgba(124,154,126,0.08))">🌉</div>
+      <div class="yoga-mini-body">
+        <span class="yoga-mini-level lvl-beg">Beginner</span>
+        <h4>Bridge Pose</h4>
+        <p>Opens chest, relieves lower back tension.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAK & HABITS -->
+<section class="streak-preview" id="streak">
+  <div class="section-label">Daily progress</div>
+  <h2 class="section-title">Build your wellness<br><em>streak</em> every day</h2>
+  <p class="section-sub">Six verified daily habits with AI accountability, timers, photo proof, and an XP system that makes wellness feel like a game you actually want to play.</p>
+
+  <div class="streak-inner">
+    <div>
+      <div class="streak-fire">🔥</div>
+      <div class="streak-big-num" id="streakCounter">0</div>
+      <div class="streak-label-txt">Day Streak</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;">
+        <div class="mock-stat"><div class="mock-stat-val" style="font-size:26px;">28</div><div class="mock-stat-lbl">Total Days</div></div>
+        <div class="mock-stat"><div class="mock-stat-val" style="font-size:26px;">12</div><div class="mock-stat-lbl">Best Streak</div></div>
+        <div class="mock-stat"><div class="mock-stat-val" style="font-size:26px;">80</div><div class="mock-stat-lbl">Today XP</div></div>
+      </div>
+    </div>
+
+    <div class="mock-habits">
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(250,246,239,0.3);margin-bottom:6px;">Today's Habits</div>
+      <div class="mock-habit">
+        <div class="mock-habit-check done">☀️</div>
+        <div class="mock-habit-info"><h5>Morning yoga / stretch</h5><p>⏱ Timer verified — 10 min</p></div>
+        <span class="mock-habit-xp">+20 XP</span>
+      </div>
+      <div class="mock-habit">
+        <div class="mock-habit-check done">💧</div>
+        <div class="mock-habit-info"><h5>Drink 8 glasses of water</h5><p>🤖 AI verified</p></div>
+        <span class="mock-habit-xp">+15 XP</span>
+      </div>
+      <div class="mock-habit">
+        <div class="mock-habit-check done">🧘</div>
+        <div class="mock-habit-info"><h5>Meditation / breathwork</h5><p>⏱ Timer verified — 5 min</p></div>
+        <span class="mock-habit-xp">+25 XP</span>
+      </div>
+      <div class="mock-habit">
+        <div class="mock-habit-check">🥗</div>
+        <div class="mock-habit-info"><h5>Eat a healthy meal</h5><p>📸 Upload photo to verify</p></div>
+        <span class="mock-habit-xp">+10 XP</span>
+      </div>
+      <div class="mock-habit">
+        <div class="mock-habit-check">😴</div>
+        <div class="mock-habit-info"><h5>Sleep 7–8 hours</h5><p>🤖 AI will ask you to confirm</p></div>
+        <span class="mock-habit-xp">+20 XP</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUTRITION -->
+<section class="nutrition-preview" id="nutrition">
+  <div class="section-label">Fuel your body</div>
+  <h2 class="section-title">4 curated <em>nutrition</em><br>plans & meal guides</h2>
+  <p class="section-sub">Balanced, vegetarian, high-protein, and detox meal plans — with calorie counts per meal, macro trackers, and Ayurvedic nutrition facts.</p>
+
+  <div class="nutrition-cards">
+    <div class="nutri-card">
+      <div class="nutri-emoji">🫐</div>
+      <h4>Antioxidant Power</h4>
+      <p>Blueberries, dark chocolate, and green tea fight free radicals, reduce inflammation, and support brain health every day.</p>
+      <span class="nutri-badge">Anti-inflammatory</span>
+    </div>
+    <div class="nutri-card" style="--c:var(--clay)">
+      <div class="nutri-emoji">🥑</div>
+      <h4>Healthy Fats = Brain Food</h4>
+      <p>Avocados, walnuts, and fatty fish provide omega-3s and monounsaturated fats essential for cognitive function and balance.</p>
+      <span class="nutri-badge">Brain Health</span>
+    </div>
+    <div class="nutri-card">
+      <div class="nutri-emoji">🌾</div>
+      <h4>Fiber Feeds Your Gut</h4>
+      <p>Aim for 25–35g of fiber daily from whole grains, legumes, and vegetables. A healthy gut microbiome shapes mood and immunity.</p>
+      <span class="nutri-badge">Gut Health</span>
+    </div>
+    <div class="nutri-card">
+      <div class="nutri-emoji">💧</div>
+      <h4>Hydration & Metabolism</h4>
+      <p>Even mild dehydration reduces focus and performance. Start each day with 500ml of water immediately upon waking.</p>
+      <span class="nutri-badge">Performance</span>
+    </div>
+    <div class="nutri-card">
+      <div class="nutri-emoji">🧄</div>
+      <h4>Spices Are Medicine</h4>
+      <p>Turmeric, ginger, and cinnamon have potent anti-inflammatory and blood sugar-stabilizing properties. Add them daily.</p>
+      <span class="nutri-badge">Ayurvedic</span>
+    </div>
+    <div class="nutri-card">
+      <div class="nutri-emoji">🥚</div>
+      <h4>Complete Protein Sources</h4>
+      <p>Eggs, paneer, lentils with rice, and quinoa provide all essential amino acids needed for muscle repair and daily function.</p>
+      <span class="nutri-badge">Recovery</span>
+    </div>
+  </div>
+</section>
+
+<!-- BREATHWORK -->
+<section class="breathe-feature" id="breathe">
+  <div class="section-label">Find your calm</div>
+  <h2 class="section-title" style="color:var(--cream);">Guided <em style="color:var(--mist)">breathwork</em><br>for stress & focus</h2>
+  <div class="breathe-circle-demo" id="breatheCircle">Breathe</div>
+  <p class="breathe-desc">Tap the circle to begin. Follow the inhale and exhale rhythm — clinically proven techniques to lower cortisol, sharpen focus, and prepare your body for deep, restorative sleep.</p>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip" id="cta">
+  <h2>Your wellness journey<br>begins <em>today</em></h2>
+  <p>Join ZenFlow — free to start. Everything you need to live balanced, all in one beautiful platform.</p>
+  <div class="cta-btns">
+    <a href="#" class="cta-btn-w">Create Free Account</a>
+    <a href="#features" class="cta-btn-t">Explore Features →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">Zen<span>Flow</span></div>
+  <p>Your complete wellness platform — yoga, AI coaching, habits, nutrition & breathwork.</p>
+  <div class="foot-links">
+    <a href="#features">Features</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#ai">AI Coach</a>
+    <a href="#yoga">Yoga</a>
+    <a href="#streak">Habits</a>
+    <a href="#nutrition">Nutrition</a>
+    <a href="#breathe">Breathwork</a>
+  </div>
+</footer>
+
+<script>
+// ── Cursor
+const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cur.style.left = (e.clientX-5)+'px'; cur.style.top = (e.clientY-5)+'px';
+  ring.style.left = (e.clientX-17)+'px'; ring.style.top = (e.clientY-17)+'px';
+});
+document.addEventListener('mousedown', () => { cur.style.transform='scale(1.8)'; ring.style.transform='scale(0.8)'; });
+document.addEventListener('mouseup', () => { cur.style.transform='scale(1)'; ring.style.transform='scale(1)'; });
+document.querySelectorAll('a,button,.feat-card,.dash-card,.yoga-mini-card,.mock-habit,.nutri-card,.ai-feature').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.transform='scale(2)'; ring.style.transform='scale(1.4)'; ring.style.borderColor='var(--sage)'; });
+  el.addEventListener('mouseleave', () => { cur.style.transform='scale(1)'; ring.style.transform='scale(1)'; ring.style.borderColor='var(--clay)'; });
+});
+
+// ── Animate progress bar on scroll
+const progFill = document.getElementById('progFill');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) progFill.style.width = '50%'; });
+}, { threshold: 0.3 });
+if(progFill) obs.observe(progFill);
+
+// ── Streak counter animation
+const streakEl = document.getElementById('streakCounter');
+const sObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      let n=0; const target=7;
+      const t = setInterval(() => {
+        n++; streakEl.textContent=n;
+        if(n>=target) clearInterval(t);
+      }, 80);
+      sObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+if(streakEl) sObs.observe(streakEl);
+
+// ── Breathe circle interaction
+const bc = document.getElementById('breatheCircle');
+let breathing = false, bInterval;
+const phases = [
+  { text:'Inhale…', dur:4000, cls:'inhale' },
+  { text:'Hold…',   dur:2000, cls:'hold' },
+  { text:'Exhale…', dur:6000, cls:'exhale' },
+  { text:'Breathe', dur:1000, cls:'' },
+];
+function runBreath(i=0) {
+  const p = phases[i % phases.length];
+  bc.textContent = p.text;
+  bc.style.animation = p.cls === 'inhale'
+    ? 'breatheExpand 4s ease-in-out forwards'
+    : p.cls === 'exhale'
+    ? 'breatheContract 6s ease-in-out forwards'
+    : 'none';
+  bInterval = setTimeout(() => { if(breathing) runBreath(i+1); }, p.dur);
+}
+bc.addEventListener('click', () => {
+  if(breathing) {
+    breathing=false; clearTimeout(bInterval);
+    bc.textContent='Breathe'; bc.style.animation='breatheCircle 5s ease-in-out infinite';
+  } else {
+    breathing=true; runBreath();
+  }
+});
+
+// ── Fade-in on scroll
+const fadeEls = document.querySelectorAll('.feat-card,.dash-card,.yoga-mini-card,.nutri-card,.ai-feature,.mock-habit');
+const fadeObs = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting) {
+      e.target.style.opacity='0'; e.target.style.transform='translateY(24px)';
+      e.target.style.transition=`opacity 0.55s ${i*0.06}s ease, transform 0.55s ${i*0.06}s ease`;
+      requestAnimationFrame(() => { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; });
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+fadeEls.forEach(el => { el.style.opacity='0'; fadeObs.observe(el); });
+</script>
+
+<style>
+@keyframes breatheExpand { from{transform:scale(1)} to{transform:scale(1.3)} }
+@keyframes breatheContract { from{transform:scale(1.3)} to{transform:scale(1)} }
+</style>
+</body>
+</html>
